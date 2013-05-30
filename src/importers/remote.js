@@ -23,7 +23,8 @@
       type : "GET",
       url : _.isFunction(this._url) ? _.bind(this._url, this) : this._url,
       dataType : options.dataType ? options.dataType : (options.jsonp ? "jsonp" : "json"),
-      callback : options.callback
+      callback : options.callback,
+      headers  : options.headers
     };
   };
 
@@ -59,6 +60,7 @@
     success   : function() {},
     type      : "GET",
     async     : true,
+    headers   : {},
     xhr : function() {
       return global.ActiveXObject ? new global.ActiveXObject("Microsoft.XMLHTTP") : new global.XMLHttpRequest();
     }
@@ -96,18 +98,19 @@
           //  append query string
           settings.url += (rparams.test(settings.url) ? "&" : "?") + settings.data;
 
-          // Add custom headers
-          if (options.headers) {
-            _(options.headers).forEach(function(value, name) {
-              settings.ajax.setRequestHeader(name, value);
-            });
-          }
-
           //  Garbage collect and reset settings.data
           settings.data = null;
         }
 
         settings.ajax.open(settings.type, settings.url, settings.async);
+
+        // Add custom headers
+        if (options.headers) {
+          _(options.headers).forEach(function(value, name) {
+            settings.ajax.setRequestHeader(name, value);
+          });
+        }
+
         settings.ajax.send(settings.data || null);
 
         return Dataset.Xhr.httpData(settings);
