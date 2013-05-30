@@ -1,5 +1,5 @@
 /**
-* Miso.Dataset - v0.4.1 - 3/13/2013
+* Miso.Dataset - v0.4.1 - 5/30/2013
 * http://github.com/misoproject/dataset
 * Copyright (c) 2013 Alex Graul, Irene Ros;
 * Dual Licensed: MIT, GPL
@@ -2174,6 +2174,13 @@ Version 0.0.1.2
 
           //  append query string
           settings.url += (rparams.test(settings.url) ? "&" : "?") + settings.data;
+
+          // Add custom headers
+          if (options.headers) {
+            _(options.headers).forEach(function(value, name) {
+              settings.ajax.setRequestHeader(name, value);
+            });
+          }
 
           //  Garbage collect and reset settings.data
           settings.data = null;

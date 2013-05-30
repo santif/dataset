@@ -96,6 +96,13 @@
           //  append query string
           settings.url += (rparams.test(settings.url) ? "&" : "?") + settings.data;
 
+          // Add custom headers
+          if (options.headers) {
+            _(options.headers).forEach(function(value, name) {
+              settings.ajax.setRequestHeader(name, value);
+            });
+          }
+
           //  Garbage collect and reset settings.data
           settings.data = null;
         }
